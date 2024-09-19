@@ -13,7 +13,7 @@ const Footer = () => {
         </div>
         <div className=" flex flex-wrap mt-16 justify-between gap-4">
           <div className="flex flex-col  items-center space-x-4">
-            <img src="Frame1000006168.png" alt="Icon 1" />
+            <img src="Framedrive.png" alt="Icon 1" />
             <div className=" flex  items-center gap-2 mt-4">
               <Link to="#" className="border-r-2 pr-2">
                 <svg

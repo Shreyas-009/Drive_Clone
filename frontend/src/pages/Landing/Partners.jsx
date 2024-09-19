@@ -10,11 +10,9 @@ import icon6 from "/Logo/icon6.jpeg";
 
 function Partners() {
   return (
-    <div className="p-2 py-4 px-10">
-      <div className="text-center">
-        {/* Trusted by section */}
-        <b>We are trusted by 1000+ industries</b>
-        {/* Icon image section */}
+    <div className="p-8 py-4 px-10">
+      <div className="">
+        <h2 className="text-4xl font-bold text-center">We are trusted by 1000+ industries</h2>
         <div className="w-full py-5 gap-6 grid grid-cols-3 place-items-center">
           <img src={icon2} className="h-20 w-28 object-cover"></img>
           <img src={icon1} className="h-20 w-28 object-cover"></img>
@@ -26,14 +24,13 @@ function Partners() {
 
         {/* Products Section */}
         <div className="mb-4">
-          <div className="text-green-800 mb-1">
-            <b>-Our Products</b>
+          <h2 className="text-[#004646] mb-1 text-2xl font-bold">
+            Our Products 
+          </h2>
+          <div className="text-2xl sm:text-5xl font-medium mb-1">
+          We offer various additional options to help you precisely and efficiently manage your files.
           </div>
-          <div className="text-2xl sm:text-4xl font-medium mb-1">
-            We offer various solutions to help you efficiently manage your
-            files.
-          </div>
-          <div>
+          <div className="text-2xl mt-4">
             Our platform is designed to enable you to access your files anywhere
             and at any time. Automatic backup, remote access, and easy file
             sharing ensure that your data is always available when you need it.
