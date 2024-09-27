@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../Common/Navbar";
 import Sidebar from "../Common/Sidebar";
 import HomePage from "./HomePage";
+import MyDrive from "./MyDrive";
+import Trash from "./Trash";
 import PopupUpload from "./PopupUpload";
 import FolderPopup from "./FolderPopup";
 import axios from "axios";
@@ -24,8 +26,9 @@ const Home = () => {
   const [isProfile, setProfile] = useState(false);
   const [isEdit, setEdit] = useState(false);
   const [isShared, setShared] = useState(false);
-  
-//
+  const [active, setActive] = useState(1);
+
+  //
   const fetchData = async () => {
     if (token) {
       try {
@@ -57,7 +60,7 @@ const Home = () => {
   }, [token]);
 
   // Toggle the file upload popup and trigger re-fetch if closed
-  const toggleUpload = (param , id) => {
+  const toggleUpload = (param, id) => {
     setSelectedFolderId(id);
     setOpen(param);
 
@@ -102,16 +105,25 @@ const Home = () => {
             toggleEdit={toggleEdit}
           />
         ) : (
-          <Sidebar data={data} data2={data2} />
+          <Sidebar
+            data={data}
+            data2={data2}
+            setActive={setActive}
+            active={active}
+          />
         )}
-        <HomePage
-          open={toggleUpload}
-          data={data}
-          data2={data2}
-          isFolderOpen={isFolderOpen}
-          toggleFolder={toggleFolder}
-          preview={togglePreview}
-        />
+        {active === 1 && (
+          <HomePage
+            open={toggleUpload}
+            data={data}
+            data2={data2}
+            isFolderOpen={isFolderOpen}
+            toggleFolder={toggleFolder}
+            preview={togglePreview}
+          />
+        )}
+        {active === 2 && <MyDrive />}
+        {active === 3 && <Trash />}
         {isEdit && <ProfilePopup open={toggleEdit} data={userData} />}{" "}
         {isOpen && (
           <PopupUpload

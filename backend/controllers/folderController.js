@@ -31,7 +31,6 @@ exports.getFolders = async (req, res) => {
   }
 };
 
-
 // Get files in a selected folder
 exports.getFilesInFolder = async (req, res) => {
   const folderId = req.params.folderId;
@@ -75,5 +74,54 @@ exports.deleteFolder = async (req, res) => {
   } catch (error) {
     console.error("Error deleting folder:", error);
     res.status(500).json({ message: "Failed to delete folder and files." });
+  }
+};
+exports.trashFolder = async (req, res) => {
+  try {
+    const { folderId } = req.params;
+
+    const folder = await Folder.findById(folderId);
+    if (!folder) {
+      return res.status(404).json({ message: "Folder not found!" });
+    }
+
+    await Folder.findByIdAndUpdate(folderId, { isTrashed: true });
+
+    await File.updateMany({ folderId }, { isTrashed: true });
+
+    return res
+      .status(200)
+      .json({ message: "Folder and files trashed successfully!" });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Server error. Could not trash folder." });
+  }
+};
+exports.restoreFolder = async (req, res) => {
+  try {
+    const { folderId } = req.params;
+
+    const folder = await Folder.findById(folderId);
+    if (!folder) {
+      return res.status(404).json({ message: "Folder not found!" });
+    }
+    if (!folder.isTrashed) {
+      return res.status(400).json({ message: "Folder is not trashed!" });
+    }
+
+    await Folder.findByIdAndUpdate(folderId, { isTrashed: false });
+
+    await File.updateMany({ folderId }, { isTrashed: false });
+
+    return res
+      .status(200)
+      .json({ message: "Folder and files restored successfully!" });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Server error. Could not restore folder." });
   }
 };
