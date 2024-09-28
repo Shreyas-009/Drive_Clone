@@ -46,6 +46,8 @@ const Home = () => {
         if (res && res2) {
           setData(res.data);
           setData2(res2.data);
+          console.log(res.data);
+
           setPreviewData(data);
         }
       } catch (error) {
@@ -95,10 +97,11 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <div className="bg-gray-100">
       <Navbar profile={toggleProfile} />
-      <div className="flex  lg:w-[100vw] h-[100vh] font-inter">
-        {isProfile ? (
+    <div className="flex w-screen  h-[100vh] font-inter">
+      <div className="w-[18%] md:w-[10%] lg:w-[15%]">
+      {isProfile ? (
           <Profile
             data={userData}
             profile={toggleProfile}
@@ -112,6 +115,9 @@ const Home = () => {
             active={active}
           />
         )}
+      </div>
+        
+        <div className="w-[82%] bg-gray-100 md:w-[90%] lg:w-[85%]">
         {active === 1 && (
           <HomePage
             open={toggleUpload}
@@ -143,6 +149,8 @@ const Home = () => {
             toggleShared={toggleShared}
           />
         )}{" "}
+        </div>
+        
       </div>
     </div>
   );
