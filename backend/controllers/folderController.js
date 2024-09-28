@@ -20,7 +20,10 @@ exports.createFolder = async (req, res) => {
 // Get all folders for the user
 exports.getFolders = async (req, res) => {
   try {
-    const folders = await Folder.find({ userId: req.user.id });
+    const folders = await Folder.find({
+      userId: req.user.id,
+      isTrashed: false,
+    });
     if (!folders || folders.length === 0) {
       return res.status(200).json({ message: "No folders found" });
     }
@@ -28,6 +31,23 @@ exports.getFolders = async (req, res) => {
   } catch (error) {
     console.error("Error retrieving folders:", error);
     res.status(500).json({ message: "Failed to retrieve folders", error });
+  }
+};
+exports.getTrashedFolder = async (req, res) => {
+  try {
+    const trashedFolders = await Folder.find({
+      userId: req.user.id,
+      isTrashed: true,
+    });
+    if (!trashedFolders || trashedFolders.length === 0) {
+      return res.status(200).json({ message: "No trashed folders found" });
+    }
+    res.status(200).json(trashedFolders);
+  } catch (error) {
+    console.error("Error retrieving trashed folders:", error);
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve trashed folders", error });
   }
 };
 
@@ -45,7 +65,7 @@ exports.getFilesInFolder = async (req, res) => {
     }
 
     // Find files associated with the given folder ID and user ID
-    const files = await File.find({ folderId, userId });
+    const files = await File.find({ folderId, userId, isTrashed: false });
     if (!files || files.length === 0) {
       return res
         .status(200)

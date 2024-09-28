@@ -7,6 +7,7 @@ import Main from "../pages/Auth/Main";
 import Landing from "../pages/Landing/Landing";
 import PopupUpload from "../pages/Dashboard/PopupUpload";
 import SharePrev from "../pages/Common/SharePrev";
+import Trash from "../pages/Dashboard/Trash";
 const Routing = () => {
   return (
     <div>

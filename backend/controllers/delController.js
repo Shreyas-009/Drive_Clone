@@ -1,5 +1,6 @@
 const File = require("../models/File");
 const { getBucket } = require("./downloadController");
+const Folder = require("../models/Folder");
 
 exports.deleteFile = async (req, res) => {
   const { filename } = req.params;
@@ -34,15 +35,15 @@ exports.trashFile = async (req, res) => {
     const { filename } = req.params;
 
     const file = await File.findOneAndUpdate(
-      { filename: filename },
+      { storedName: filename },
       { isTrashed: true },
       { new: true }
     );
 
     if (!file) {
+      console.log("File not found!");
       return res.status(404).json({ message: "File not found!" });
     }
-
     return res
       .status(200)
       .json({ message: "File trashed successfully!", file });
@@ -59,10 +60,22 @@ exports.restoreFile = async (req, res) => {
     const { filename } = req.params;
 
     const file = await File.findOneAndUpdate(
-      { filename: filename },
+      {
+        storedName: filename,
+      },
       { isTrashed: false },
       { new: true }
     );
+
+    if (file.folderId) {
+      await Folder.findOneAndUpdate(
+        {
+          _id: file.folderId,
+        },
+        { isTrashed: false },
+        { new: true }
+      );
+    }
 
     if (!file) {
       return res.status(404).json({ message: "File not found!" });

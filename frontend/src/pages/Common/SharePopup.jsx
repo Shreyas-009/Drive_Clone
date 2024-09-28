@@ -10,7 +10,7 @@ function SharePopup({ toggleShared, dataPreview }) {
     `${window.location.protocol}//${window.location.host}/share/${dataPreview.storedName}`
   );
   const [token, setToken] = useState(localStorage.getItem("token") || "");
-  const [users, setUsers] = useState('');
+  const [users, setUsers] = useState("");
   const [checked, setChecked] = useState(dataPreview.anyone);
   const popRef = useRef();
   useEffect(() => {
@@ -26,12 +26,13 @@ function SharePopup({ toggleShared, dataPreview }) {
   useEffect(() => {
     if (dataPreview.shared && Array.isArray(dataPreview.shared)) {
       // Join all emails with a comma
-      const userEmails = dataPreview.shared.map(user => user.email).join(',');
+      const userEmails = dataPreview.shared.map((user) => user.email).join(",");
       setUsers(userEmails); // Set the state with the comma-separated emails
     }
   }, [dataPreview.shared]);
 
   const handleClose = () => {
+    setUsers("");
     toggleShared(false);
   };
 
@@ -77,40 +78,42 @@ function SharePopup({ toggleShared, dataPreview }) {
 
       return newChecked;
     });
-
-    
   };
 
-
-  
   const handleSave = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const reqData = {
-        users : users
-    }
+      users: users,
+    };
     try {
-     
       // Sending the POST request
-      const response = await axios.post(  `${api}files/secured/${dataPreview.storedName}`, reqData, {
-        headers: {
-          Authorization: `Bearer ${token}`, // If you need to pass a token for authorization
-          'Content-Type': 'application/json' // Set content type to JSON
+      const response = await axios.post(
+        `${api}files/secured/${dataPreview.storedName}`,
+        reqData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // If you need to pass a token for authorization
+            "Content-Type": "application/json", // Set content type to JSON
+          },
         }
-      });
-  
+      );
+
       // Handle successful response
-      console.log('Response:', response.data);
-      toast.success('File shared successfully!',{
-        autoClose : 500
+      console.log("Response:", response.data);
+      toast.success("File shared successfully!", {
+        autoClose: 500,
       });
-      
+      setUsers(""); 
+      toggleShared(false);
     } catch (error) {
       // Handle any errors
-      console.error('Error:', error.response ? error.response.data : error.message);
-      toast.error('Failed to share file!');
+      console.error(
+        "Error:",
+        error.response ? error.response.data : error.message
+      );
+      toast.error("Failed to share file!");
     }
   };
- 
 
   return (
     <div className="w-[100vw] h-[100vh] top-0 right-0 fixed flex  z-[999] bg-[#000000d5]  overflow-hidden font-inter text-white justify-center items-center">
@@ -119,7 +122,9 @@ function SharePopup({ toggleShared, dataPreview }) {
         className="w-[80%] md:w-[40%] lg:w-[30%] bg-white h-fit absolute top-5 right-2 lg:top-10 lg:right-10 rounded-lg my-10 overflow-hidden flex flex-col  text-black"
       >
         <div className="w-full flex justify-end h-[5%] md:h-[10%] p-2">
-          <h1 className="w-full text-center p-2 font-semibold">Share Your File</h1>
+          <h1 className="w-full text-center p-2 font-semibold">
+            Share Your File
+          </h1>
           <button onClick={() => handleClose(false)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -150,7 +155,9 @@ function SharePopup({ toggleShared, dataPreview }) {
               <path d="M440-280H280q-83 0-141.5-58.5T80-480q0-83 58.5-141.5T280-680h160v80H280q-50 0-85 35t-35 85q0 50 35 85t85 35h160v80ZM320-440v-80h320v80H320Zm200 160v-80h160q50 0 85-35t35-85q0-50-35-85t-85-35H520v-80h160q83 0 141.5 58.5T880-480q0 83-58.5 141.5T680-280H520Z" />
             </svg>
           </div>{" "}
-          <h1 className="text-gray-500  pt-3 px-2 w-full">Sharing Permission</h1>
+          <h1 className="text-gray-500  pt-3 px-2 w-full">
+            Sharing Permission
+          </h1>
           <form className="w-full p-2 flex flex-col justify-center items-end">
             <input
               className=" w-full border p-1 md:p-2 outline-none rounded-md text-sm md:text-base"
