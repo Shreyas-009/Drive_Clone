@@ -44,12 +44,14 @@ function HomePage({ open, data, data2, isFolderOpen, toggleFolder, preview }) {
             Authorization: `Bearer ${token}`,
           },
         });
-        if (res) {
+        if (res.data && res.data.files) {
           setShared(res.data.files);
-          console.log(shared);
+        } else {
+          setShared([]); // Set empty array if no files found
         }
       } catch (error) {
         console.log(error);
+        setShared([]); // Set empty array on error
       }
     }
   };
@@ -60,11 +62,10 @@ function HomePage({ open, data, data2, isFolderOpen, toggleFolder, preview }) {
   return (
     <div className="font-inter relative top-14 md:top-16 lg:top-20 p-2  bg-white h-[100%] ">
       <div className="flex w-[78%] md:w-[88%] lg:w-[84%] justify-between items-center top-14 md:top-16 lg:top-20  bg-white pt-2 pb-4 md:pb-6  z-10 fixed ">
-      
-          <h1 className="text-lg md:text-xl lg:text-2xl flex   font-[400] ">
-            Welcome To Drive
-          </h1>
-        
+        <h1 className="text-lg md:text-xl lg:text-2xl flex   font-[400] ">
+          Welcome To Drive
+        </h1>
+
         <div className="flex gap-1 justify-evenly ">
           <button className="btnAction1 z-20" onClick={toggleFolder}>
             <p className="hidden lg:block">Create</p>
@@ -72,7 +73,7 @@ function HomePage({ open, data, data2, isFolderOpen, toggleFolder, preview }) {
           </button>
           <button className="btnAction2 z-20 " onClick={() => open(true)}>
             <p className="hidden lg:block ">Upload</p>
-              <i className="fa-solid fa-arrow-up-from-bracket"></i>
+            <i className="fa-solid fa-arrow-up-from-bracket"></i>
           </button>
         </div>
       </div>
@@ -93,10 +94,13 @@ function HomePage({ open, data, data2, isFolderOpen, toggleFolder, preview }) {
       </div>
       <div className="p-1">
         {shared.length > 0 && !selectedFolder && (
-          <SharedFiles preview={preview} data={shared} text={"Shared with me"} />
+          <SharedFiles
+            preview={preview}
+            data={shared}
+            text={"Shared with me"}
+          />
         )}
       </div>
-      
     </div>
   );
 }

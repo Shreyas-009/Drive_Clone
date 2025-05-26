@@ -25,7 +25,7 @@ const Home = () => {
   const [isProfile, setProfile] = useState(false);
   const [isEdit, setEdit] = useState(false);
   const [isShared, setShared] = useState(false);
-  
+
   const fetchData = async () => {
     if (token) {
       try {
@@ -34,19 +34,16 @@ const Home = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        const res2 = await axios.get(`${api}files/get-limit`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
 
-        if (res && res2) {
+        if (res) {
           setData(res.data);
-          setData2(res2.data);
-          setPreviewData(res.data); // Use res.data instead of data
+          setPreviewData(res.data);
+          setData2([]); // Set empty array since we don't have limit data
         }
       } catch (error) {
-        console.log(error);
+        console.log("Error fetching files:", error);
+        setData([]);
+        setData2([]);
       }
     }
   };
@@ -57,7 +54,7 @@ const Home = () => {
   }, [token]);
 
   // Toggle the file upload popup and trigger re-fetch if closed
-  const toggleUpload = (param , id) => {
+  const toggleUpload = (param, id) => {
     setSelectedFolderId(id);
     setOpen(param);
 
@@ -94,49 +91,48 @@ const Home = () => {
   return (
     <div className="bg-gray-100">
       <Navbar profile={toggleProfile} />
-    <div className="flex w-screen  h-[100vh] font-inter">
-      <div className="w-[18%] md:w-[10%] lg:w-[15%]">
-      {isProfile ? (
-          <Profile
-            data={userData}
-            profile={toggleProfile}
-            toggleEdit={toggleEdit}
-          />
-        ) : (
-          <Sidebar data={data} data2={data2} />
-        )}
-      </div>
-        
-        <div className="w-[82%] bg-gray-100 md:w-[90%] lg:w-[85%]">
-        <HomePage
-          open={toggleUpload}
-          data={data}
-          data2={data2}
-          isFolderOpen={isFolderOpen}
-          toggleFolder={toggleFolder}
-          preview={togglePreview}
-        />
-        {isEdit && <ProfilePopup open={toggleEdit} data={userData} />}{" "}
-        {isOpen && (
-          <PopupUpload
-            open={toggleUpload}
-            selectedFolderId={selectedFolderID}
-            setSelectedFolderId={setSelectedFolderId}
-          />
-        )}{" "}
-        {isFolderOpen && <FolderPopup toggle={toggleFolder} />}{" "}
-        {isShared && (
-          <SharePopup toggleShared={toggleShared} dataPreview={previwData} />
-        )}{" "}
-        {isPreview && (
-          <Preview
-            preview={togglePreview}
-            dataPreview={previwData}
-            toggleShared={toggleShared}
-          />
-        )}{" "}
+      <div className="flex w-screen  h-[100vh] font-inter">
+        <div className="w-[18%] md:w-[10%] lg:w-[15%]">
+          {isProfile ? (
+            <Profile
+              data={userData}
+              profile={toggleProfile}
+              toggleEdit={toggleEdit}
+            />
+          ) : (
+            <Sidebar data={data} data2={data2} />
+          )}
         </div>
-        
+
+        <div className="w-[82%] bg-gray-100 md:w-[90%] lg:w-[85%]">
+          <HomePage
+            open={toggleUpload}
+            data={data}
+            data2={data2}
+            isFolderOpen={isFolderOpen}
+            toggleFolder={toggleFolder}
+            preview={togglePreview}
+          />
+          {isEdit && <ProfilePopup open={toggleEdit} data={userData} />}{" "}
+          {isOpen && (
+            <PopupUpload
+              open={toggleUpload}
+              selectedFolderId={selectedFolderID}
+              setSelectedFolderId={setSelectedFolderId}
+            />
+          )}{" "}
+          {isFolderOpen && <FolderPopup toggle={toggleFolder} />}{" "}
+          {isShared && (
+            <SharePopup toggleShared={toggleShared} dataPreview={previwData} />
+          )}{" "}
+          {isPreview && (
+            <Preview
+              preview={togglePreview}
+              dataPreview={previwData}
+              toggleShared={toggleShared}
+            />
+          )}{" "}
+        </div>
       </div>
     </div>
   );
