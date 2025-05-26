@@ -14,12 +14,13 @@ const restoreRoutes = require("./routes/restoreRoutes");
 
 const port = process.env.PORT || 8080;
 
-app.use(
-  cors({
-    origin: "*",
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: "https://drive-clone-frontend.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true
+}));
+
+
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
