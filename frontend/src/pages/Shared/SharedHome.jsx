@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import api from "../../utils/api";
-import {setTime, setDate} from "../../utils/timeConverter";
+import { setTime, setDate } from "../../utils/timeConverter";
 import { checkType } from "../../utils/fileType";
 import SharedFiles from "./SharedFiles";
 
@@ -26,11 +26,14 @@ const SharedHome = ({ preview }) => {
             Authorization: `Bearer ${token}`,
           },
         });
-        if (res) {
+        if (res.data && res.data.files) {
           setData(res.data.files);
+        } else {
+          setData([]);
         }
       } catch (error) {
-        // console.log(error);
+        console.log("Error fetching shared files:", error);
+        setData([]);
       }
     }
   };
@@ -67,7 +70,26 @@ const SharedHome = ({ preview }) => {
         </h1>
       </div>
       <div className="mt-14 md:mt-16 lg:mt-20">
-        <SharedFiles preview={preview} data={data} />
+        {data && data.length > 0 ? (
+          <SharedFiles preview={preview} data={data} />
+        ) : (
+          <div className="flex flex-col items-center justify-center py-10">
+            <div className="bg-gray-100 rounded-full p-6 mb-4">
+              <img
+                src="/Logo/Recent/share.svg"
+                alt="No shared files"
+                className="w-10 h-10 md:w-16 md:h-16 opacity-50"
+              />
+            </div>
+            <h3 className="text-xl md:text-2xl font-medium text-gray-700 mb-2">
+              No files shared with you
+            </h3>
+            <p className="text-gray-500 text-center max-w-md">
+              When someone shares files or folders with you, they will appear
+              here.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

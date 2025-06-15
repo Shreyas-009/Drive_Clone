@@ -38,12 +38,24 @@ const Home = () => {
         if (res) {
           setData(res.data);
           setPreviewData(res.data);
-          setData2([]); // Set empty array since we don't have limit data
+          setData2({
+            total: "400",
+            doc: "100",
+            img: "100",
+            other: "100",
+            video: "100",
+          });
         }
       } catch (error) {
         console.log("Error fetching files:", error);
         setData([]);
-        setData2([]);
+        setData2({
+          total: "400",
+          doc: "100",
+          img: "100",
+          other: "100",
+          video: "100",
+        });
       }
     }
   };

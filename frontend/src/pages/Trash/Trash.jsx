@@ -66,8 +66,6 @@ const Trash = () => {
     setEdit(param);
   };
 
- 
-
   return (
     <div className="bg-white">
       <Navbar profile={toggleProfile} />

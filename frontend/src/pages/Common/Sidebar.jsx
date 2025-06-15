@@ -27,7 +27,9 @@ function Sidebar({ data2, data }) {
   return (
     <div className="sideBar w-[18%] md:w-[10%] lg:w-[15%] font-inter bg-gray-100 top-14 md:top-16 lg:top-20 px-2 h-full fixed overflow-y-auto">
       <ul className="w-full flex flex-col items-center">
-        <li className={location.pathname === "/dashboard"
+        <li
+          className={
+            location.pathname === "/dashboard"
               ? "listSideActive"
               : "listSideNormal"
           }
@@ -87,9 +89,7 @@ function Sidebar({ data2, data }) {
         </li> */}
         <li
           className={
-            location.pathname === "/trash"
-              ? "listSideActive"
-              : "listSideNormal"
+            location.pathname === "/trash" ? "listSideActive" : "listSideNormal"
           }
         >
           <Link
@@ -100,14 +100,13 @@ function Sidebar({ data2, data }) {
             <p className=" hidden lg:block p-1">Trash</p>
           </Link>
         </li>
-        
       </ul>
       <hr />
       <div className="storage  lg:p-2 w-full listSideNormal ">
         <div className="flex-col  w-full justify-center  ">
           <li className=" list-none  lg:p-2 flex justify-center mb-0 lg:mb-2 lg:justify-normal lg:items-center transition-all duration-100">
             <span>
-            <i className="fa-solid  fa-cloud  lg:mx-2"></i>
+              <i className="fa-solid  fa-cloud  lg:mx-2"></i>
             </span>
             <p className=" hidden lg:block">Storage</p>
           </li>

@@ -93,13 +93,31 @@ function HomePage({ open, data, data2, isFolderOpen, toggleFolder, preview }) {
         </div>
       </div>
       <div className="p-1">
-        {shared.length > 0 && !selectedFolder && (
+        {shared.length > 0 && !selectedFolder ? (
           <SharedFiles
             preview={preview}
             data={shared}
             text={"Shared with me"}
           />
-        )}
+        ) : !selectedFolder ? (
+          <div className="mt-8">
+            <h2 className="text-lg md:text-xl lg:text-2xl mt-2 lg:mt-4">
+              Shared with me
+            </h2>
+            <div className="flex flex-col items-center justify-center py-6 bg-[#e7e7e763] rounded-lg my-2">
+              <div className="bg-white rounded-full p-4 mb-3">
+                <img
+                  src="/Logo/Recent/share.svg"
+                  alt="No shared files"
+                  className="w-8 h-8 opacity-60"
+                />
+              </div>
+              <p className="text-gray-600 text-sm md:text-base text-center">
+                No files have been shared with you yet
+              </p>
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   );

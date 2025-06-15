@@ -28,20 +28,50 @@ const Shared = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        const res2 = await axios.get(`${api}files/get-limit`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
 
-        if (res && res2) {
+        if (res) {
           setData(res.data);
-          setData2(res2.data);
+          setPreviewData(res.data);
 
-          setPreviewData(data);
+          // Try to get limit data, but don't fail if it doesn't exist
+          try {
+            const res2 = await axios.get(`${api}files/get-limit`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            if (res2 && res2.data) {
+              setData2(res2.data);
+            } else {
+              setData2({
+                total: "400",
+                doc: "100",
+                img: "100",
+                other: "100",
+                video: "100",
+              });
+            }
+          } catch (limitError) {
+            console.log("Limit data not available:", limitError);
+            setData2({
+              total: "400",
+              doc: "100",
+              img: "100",
+              other: "100",
+              video: "100",
+            });
+          }
         }
       } catch (error) {
-        console.log(error);
+        console.log("Error fetching files:", error);
+        setData([]);
+        setData2({
+          total: "400",
+          doc: "100",
+          img: "100",
+          other: "100",
+          video: "100",
+        });
       }
     }
   };

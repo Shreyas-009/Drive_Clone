@@ -8,7 +8,7 @@ function ProgressBar({ total, available, px, upload }) {
   useEffect(() => {
     if (upload) {
       // Directly set the width without gsap animation during upload
-      if(progressRef.current) {
+      if (progressRef.current) {
         progressRef.current.style.width = `${progress > 100 ? 100 : progress}%`;
       }
     } else {
@@ -16,7 +16,11 @@ function ProgressBar({ total, available, px, upload }) {
       gsap.fromTo(
         progressRef.current,
         { width: "0%" },
-        { width: `${progress > 100 ? 100 : progress}%`, duration: 1, ease: "power2.out" }
+        {
+          width: `${progress > 100 ? 100 : progress}%`,
+          duration: 1,
+          ease: "power2.out",
+        }
       );
     }
   }, [progress, upload]);
@@ -35,7 +39,10 @@ function ProgressBar({ total, available, px, upload }) {
   };
 
   return (
-    <div style={{ marginLeft: `${px}px` || "15px" }} className="relative w-[90%] rounded-3xl bg-[#e0e0e0] text-center text-white">
+    <div
+      style={{ marginLeft: `${px}px` || "15px" }}
+      className="relative w-[90%] rounded-3xl bg-[#e0e0e0] text-center text-white"
+    >
       <span className="absolute inset-0 flex items-center justify-center text-sm">
         {progress > 100 ? 100 : progress}%
       </span>
